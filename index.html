@@ -78,7 +78,7 @@
 		With more samples, the averaged color represents the fraction of the pixel covered by the triangle.
 		In the pixel inspector below, the 1 sample per pixel image has a visible discontinuity at the corner of the thin red triangle.
 		Neighboring pixels switch directly between white and red.
-		At 4 and 16 samples per pixel, pixels around both sides of that corner contain light-red partial-coverage values, so the transition is smoother.
+		At 4 and 16 samples per pixel, pixels around that corner contain light-red partial-coverage values, so the transition is smoother.
 		The 16 sample per pixel image gives the finest coverage estimate and therefore the smoothest edge, but takes the most computation.
 
 		<figure>
@@ -107,7 +107,7 @@
 		</figure>
 
 		<h2>Task 4: Barycentric coordinates</h2>
-		Barycentric coordinates are way to express a sample in a triangle as a weighted combination of its three vertices.
+		Barycentric coordinates are a way to express a sample in a triangle as a weighted combination of its three vertices.
 		The three weights add to one, and each weight represents how much the point is associated with one vertex.
 		We compute the weights from triangle areas, then use the same weights to interpolate vertex attributes.
 		In the image below, the source svg only consists of red, green, and blue vertices, but the interior of the triangle blends smoothly because every sample receives a weighted combination of those three colors.
@@ -118,8 +118,8 @@
 		</figure>
 
 		<figure>
-			<img src="assets/task_4_2.png" alt="basic/test7.svg, 1 sample per pixel" style="width:50%"/>
-			<figcaption>basic/test7.svg, 1 sample per pixel</figcaption>
+			<img src="assets/task_4_2.png" alt="basic/test7.svg" style="width:50%"/>
+			<figcaption>basic/test7.svg</figcaption>
 		</figure>
 
 		<h2>Task 5: "Pixel sampling" for texture mapping</h2>
