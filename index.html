@@ -73,9 +73,9 @@
 
 		<br><br>
 
-		Supersampling is useful because it can better represent pixels that are only partially covered.
+		Supersampling reduces aliasing by estimating each pixel's coverage with multiple subpixel samples and averaging their colors.
 		At one sample per pixel, a thin feature must be either fully present or absent, which creates jagged edges.
-		With more samples, the averaged color represents the fraction of the pixel covered by the triangle.
+		With more samples, the averaged color represents the fraction of the pixel covered by the triangle, producing partial-coverage colors along edges instead of an abrupt binary change.
 		In the pixel inspector below, the 1 sample per pixel image has a visible discontinuity at the corner of the thin red triangle.
 		Neighboring pixels switch directly between white and red.
 		At 4 and 16 samples per pixel, pixels around that corner contain light-red partial-coverage values, so the transition is smoother.
@@ -110,7 +110,7 @@
 		Barycentric coordinates are a way to express a sample in a triangle as a weighted combination of its three vertices.
 		The three weights add to one, and each weight represents how much the point is associated with one vertex.
 		We compute the weights from triangle areas, then use the same weights to interpolate vertex attributes.
-		In the image below, the source svg only consists of red, green, and blue vertices, but the interior of the triangle blends smoothly because every sample receives a weighted combination of those three colors.
+		In the image below, the source SVG only consists of red, green, and blue vertices, but the interior of the triangle blends smoothly because every sample receives a weighted combination of those three colors.
 
 		<figure>
 			<img src="assets/task_4_1.png" alt="Barycentric interpolation of red, green, and blue vertex colors" style="width:50%"/>
@@ -124,7 +124,7 @@
 
 		<h2>Task 5: "Pixel sampling" for texture mapping</h2>
 		Texture mapping uses barycentric coordinates to interpolate an <code>(u, v)</code> coordinate for each covered sample of a triangle, then samples the texture at that location.
-		Nearest sampling chooses the texel containing the <code>(u, v)</code> coordinate, so it is cheap but can look blocky.
+		Nearest sampling chooses the texel whose sample location is nearest to the interpolated <code>(u, v)</code> coordinate, so it is cheap but can look blocky.
 		Bilinear sampling takes the four surrounding texels and linearly blends them according to the sample's position, producing a smoother result.
 
 		<br><br>
@@ -173,9 +173,9 @@
 		With pixel sampling, <code>P_NEAREST</code> uses one texel lookup and is fastest, but can look blocky.
 		<code>P_LINEAR</code> blends four nearby texels, which costs more work but produces smoother results within a mipmap level.
 		With level sampling, <code>L_ZERO</code> always uses the full-resolution texture and does not use additional mipmap levels, but it can alias when the texture is minified.
-		<code>L_NEAREST</code> chooses the closest prefiltered mipmap level, which uses additional memory but reduces aliasing for minified textures.
-		<code>L_LINEAR</code> blends samples from the two nearest mipmap levels, making transitions between levels smoother at the cost of an additional texture sample.
-		Finally, increasing the sample rate averages more rasterization samples per pixel, improving edge antialiasing at the cost of more sample-buffer memory and texture-sampling work.
+		<code>L_NEAREST</code> computes the level of detail and chooses the closest prefiltered mipmap level, so it takes more computation than <code>L_ZERO</code> but reduces aliasing for minified textures.
+		<code>L_LINEAR</code> blends samples from the two adjacent mipmap levels. It takes the most computation because it requires an additional texture lookup, but it gives the smoothest transitions between mipmap levels.
+		Finally, increasing the sample rate averages more rasterization samples per pixel, improving antialiasing at the cost of more sample-buffer memory and texture-sampling work.
 
 		<br><br>
 
